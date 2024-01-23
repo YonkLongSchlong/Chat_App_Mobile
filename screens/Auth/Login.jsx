@@ -1,4 +1,4 @@
-import { View, Text, TextInput, Pressable } from "react-native";
+import { View, Text, Pressable, StyleSheet } from "react-native";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Colors from "../../constants/Colors";
@@ -8,108 +8,93 @@ import LoginTextInput from "../../components/Inputs/LoginTextInput";
 export default function Login({ navigation }) {
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <View
-        style={{
-          flex: 1,
-          alignItems: "center",
-          justifyContent: "center",
-          marginBottom: 50,
-        }}
-      >
-        {/** HEADER */}
-        <Text
-          style={{ fontFamily: "fontTitle", fontSize: 50, marginBottom: 50 }}
-        >
-          Pandalo
-        </Text>
+      <View style={styles.container}>
+        {/* ---------- HEADER ---------- */}
+        <Text style={styles.appText}>Pandalo</Text>
 
-        {/** INPUT USER'S PHONE AND PASSWORD */}
-        <View
-          style={{
-            width: "70%",
-          }}
-        >
-          <Text
-            style={{
-              fontSize: FontSize.medium,
-              marginBottom: 20,
-              alignSelf: "flex-start",
-              fontFamily: "regular",
-            }}
-          >
-            Login to your account:
-          </Text>
+        {/* ---------- INPUT USER'S PHONE AND PASSWORD ---------- */}
+        <View style={{ width: "70%" }}>
+          <Text style={styles.headerText}>Login to your account:</Text>
+
           <LoginTextInput placeholder="Enter your phone number" />
           <LoginTextInput placeholder="Enter your password" secure={true} />
+
           <Pressable style={{ marginTop: -10 }}>
-            <Text
-              style={{
-                fontFamily: "regular",
-                fontSize: FontSize.regular,
-                color: Colors.dark_blue,
-                alignSelf: "flex-end",
-                textDecorationLine: "underline",
-              }}
-            >
-              Forgot password
-            </Text>
+            <Text style={styles.forgetPasswordText}>Forgot password</Text>
           </Pressable>
-          <Pressable
-            style={{
-              marginTop: 30,
-              borderRadius: 5,
-              backgroundColor: Colors.dark_blue,
-              paddingHorizontal: 10,
-              paddingVertical: 15,
-              width: "100%",
-              alignItems: "center",
-            }}
-          >
-            <Text
-              style={{
-                color: "white",
-                fontSize: FontSize.medium,
-                fontFamily: "regular",
-              }}
-            >
-              Sign in
-            </Text>
+
+          <Pressable style={styles.signinButton}>
+            <Text style={styles.signinButtonText}>Sign in</Text>
           </Pressable>
         </View>
 
-        {/** REGISTER LINK */}
-        <View
-          style={{
-            width: "70%",
-            marginTop: 10,
-            flexDirection: "row",
-            justifyContent: "center",
-            gap: 5,
-          }}
-        >
-          <Text
-            style={{
-              alignSelf: "flex-end",
-              fontFamily: "regular",
-              fontSize: FontSize.regular,
-            }}
-          >
-            Don't have an account?
-          </Text>
+        {/* ---------- REGISTER LINK ---------- */}
+        <View style={styles.registerContainer}>
+          <Text style={styles.signupText}>Don't have an account?</Text>
           <Pressable onPress={() => navigation.navigate("Register")}>
-            <Text
-              style={{
-                fontSize: FontSize.regular,
-                color: Colors.dark_blue,
-                fontFamily: "regular",
-                textDecorationLine: "underline",
-              }}
-            >
-              Sign up
-            </Text>
+            <Text style={styles.signupLinkText}>Sign up</Text>
           </Pressable>
         </View>
       </View>
     </SafeAreaView>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 50,
+  },
+  appText: {
+    fontFamily: "fontTitle",
+    fontSize: 50,
+    marginBottom: 50,
+  },
+  headerText: {
+    fontSize: FontSize.medium,
+    marginBottom: 20,
+    alignSelf: "flex-start",
+    fontFamily: "regular",
+  },
+  forgetPasswordText: {
+    fontFamily: "regular",
+    fontSize: FontSize.regular,
+    color: Colors.primary,
+    alignSelf: "flex-end",
+    textDecorationLine: "underline",
+  },
+  signinButton: {
+    marginTop: 30,
+    borderRadius: 5,
+    backgroundColor: Colors.primary,
+    paddingHorizontal: 10,
+    paddingVertical: 15,
+    width: "100%",
+    alignItems: "center",
+  },
+  signinButtonText: {
+    color: "white",
+    fontSize: FontSize.medium,
+    fontFamily: "regular",
+  },
+  registerContainer: {
+    width: "70%",
+    marginTop: 10,
+    flexDirection: "row",
+    justifyContent: "center",
+    gap: 5,
+  },
+  signupText: {
+    alignSelf: "flex-end",
+    fontFamily: "regular",
+    fontSize: FontSize.regular,
+  },
+  signupLinkText: {
+    fontSize: FontSize.regular,
+    color: Colors.primary,
+    fontFamily: "regular",
+    textDecorationLine: "underline",
+  },
+});

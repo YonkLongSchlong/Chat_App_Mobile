@@ -3,5 +3,5 @@ export default FontSize = {
   regular: 14,
   medium: 16,
   large: 18,
-  ex_lagre: 20,
+  ex_lagre: 22,
 };

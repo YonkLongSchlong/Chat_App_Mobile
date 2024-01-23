@@ -1,17 +1,14 @@
 import { View, TextInput, StyleSheet } from "react-native";
 import React from "react";
-import { Search } from "lucide-react-native";
-import { QrCode } from "lucide-react-native";
-import { Plus } from "lucide-react-native";
+import { Search, UserPlus2 } from "lucide-react-native";
 
-export default function UserHeaderBar() {
+export default function PeopleHeaderBar() {
   return (
     <View style={styles.wrapContainer}>
       <View style={styles.container}>
         <Search size={24} color={"black"} />
         <TextInput style={styles.textInput} placeholder="Search" />
-        <Plus size={24} color={"black"} />
-        <QrCode size={24} color={"black"} />
+        <UserPlus2 size={24} color={"black"} />
       </View>
     </View>
   );

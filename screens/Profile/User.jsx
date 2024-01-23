@@ -2,17 +2,46 @@ import {
   View,
   Text,
   Animated,
-  ScrollView,
   Image,
   StyleSheet,
   Dimensions,
-  StatusBar,
   Pressable,
+  FlatList,
 } from "react-native";
 import React, { useRef } from "react";
-import {} from "lucide-react-native";
+import {
+  Archive,
+  Camera,
+  History,
+  ImagePlusIcon,
+  Video,
+} from "lucide-react-native";
+import FontSize from "../../constants/FontSize";
+import Colors from "../../constants/Colors";
 
-const BANNER_MAX_HEIGHT = Dimensions.get("window").height / 2;
+const BANNER_MAX_HEIGHT = Dimensions.get("window").height / 2.5;
+const settingOptions = [
+  {
+    id: 1,
+    name: "My avarta",
+    icon: <ImagePlusIcon size={24} color={Colors.primary} />,
+  },
+  {
+    id: 2,
+    name: "Stories archive",
+    icon: <Archive size={24} color={Colors.primary} />,
+  },
+  {
+    id: 3,
+    name: "Memories",
+    icon: <History size={24} color={Colors.primary} />,
+  },
+  {
+    id: 4,
+    name: "My videos",
+    icon: <Video size={24} color={Colors.primary} />,
+  },
+];
 
 export default function User() {
   const scrollY = useRef(new Animated.Value(0)).current;
@@ -26,7 +55,7 @@ export default function User() {
         )}
         scrollEventThrottle={16}
       >
-        {/** IMAGE BANNER */}
+        {/* ---------- IMAGE BANNER ---------- */}
         <View style={styles.bannerContainer}>
           <Animated.Image
             style={styles.banner(scrollY)}
@@ -34,13 +63,54 @@ export default function User() {
           />
         </View>
 
-        {/** AVARTA BANNER */}
+        {/* ---------- AVARTA BANNER ---------- */}
         <View style={styles.avartarContainer}>
-          <Pressable></Pressable>
+          <Image
+            style={styles.avarta}
+            source={require("../../assets/96YOG1ej_200x200.jpg")}
+          />
+          <Pressable style={styles.changeAvartaIcon}>
+            <Camera size={24} color={"white"} />
+          </Pressable>
         </View>
 
-        {/** TODO: SETTING OPTIONS */}
-        <View style={{ height: 1000 }}></View>
+        {/* ---------- USERNAME AND BIO ---------- */}
+        <View style={{ marginTop: 80, alignItems: "center" }}>
+          <Text style={styles.userNameText}>The Wock</Text>
+          <Text style={styles.bioText}>
+            If ya smell, what the wock is cooking
+          </Text>
+        </View>
+
+        {/* ---------- SETTING OPTIONS ---------- */}
+        <View
+          style={{
+            alignItems: "center",
+            marginTop: 30,
+          }}
+        >
+          <View style={styles.optionListContainer}>
+            <FlatList
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              data={settingOptions}
+              estimatedItemSize={10}
+              renderItem={({ item }) => {
+                return (
+                  <View>
+                    <Pressable style={styles.settingOptionButton}>
+                      {item.icon}
+                      <Text style={styles.settingOptionText}>{item.name}</Text>
+                    </Pressable>
+                  </View>
+                );
+              }}
+            />
+          </View>
+        </View>
+
+        {/* ---------- TODO: FEED ?? ---------- */}
+        <View style={{ height: 500 }}></View>
       </Animated.ScrollView>
     </View>
   );
@@ -97,6 +167,49 @@ const styles = StyleSheet.create({
     alignItems: "center",
     position: "absolute",
     left: Dimensions.get("window").width / 2 - 75,
-    top: Dimensions.get("window").height / 2 - 75,
+    top: Dimensions.get("window").height / 2.5 - 75,
+  },
+  avarta: {
+    width: 140,
+    height: 140,
+    borderRadius: 75,
+    resizeMode: "contain",
+    borderWidth: 0,
+  },
+  userNameText: { fontFamily: "semiBold", fontSize: FontSize.ex_lagre },
+  bioText: {
+    marginTop: 5,
+    fontFamily: "regular",
+    fontSize: FontSize.small,
+    color: Colors.dark_gray,
+    width: 250,
+    textAlign: "center",
+  },
+  optionListContainer: {
+    alignItems: "center",
+    width: "90%",
+  },
+  settingOptionButton: {
+    backgroundColor: "white",
+    paddingHorizontal: 20,
+    paddingVertical: 15,
+    marginRight: 10,
+    borderRadius: 15,
+    flexDirection: "row",
+    gap: 10,
+    alignItems: "center",
+  },
+  settingOptionText: {
+    fontFamily: "regular",
+    fontSize: FontSize.small,
+  },
+  changeAvartaIcon: {
+    position: "absolute",
+    bottom: 10,
+    right: -5,
+    zIndex: 100,
+    backgroundColor: Colors.primary,
+    padding: 10,
+    borderRadius: 75,
   },
 });

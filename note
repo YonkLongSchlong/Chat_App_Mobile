@@ -1,0 +1,26 @@
+      {/* ONLINE FIRENDS */}
+      {/* <View style={styles.onlineContainer}>
+        <FlashList
+          data={data}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          estimatedItemSize={100}
+          renderItem={({ item }) => {
+            return (
+              <View
+                style={{
+                  flex: 1,
+                  height: 100,
+                  justifyContent: "center",
+                  margin: 10,
+                }}
+              >
+                <Image
+                  style={styles.avartaImage}
+                  source={require("../../assets/96YOG1ej_200x200.jpg")}
+                />
+              </View>
+            );
+          }}
+        />
+      </View> */}
