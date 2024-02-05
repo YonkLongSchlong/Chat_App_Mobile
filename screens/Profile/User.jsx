@@ -11,9 +11,9 @@ import {
 import React, { useRef } from "react";
 import {
   Archive,
-  Camera,
   History,
   ImagePlusIcon,
+  Settings,
   Video,
 } from "lucide-react-native";
 import FontSize from "../../constants/FontSize";
@@ -23,28 +23,39 @@ const BANNER_MAX_HEIGHT = Dimensions.get("window").height / 2.5;
 const settingOptions = [
   {
     id: 1,
+    name: "Settings",
+    icon: <Settings size={24} color={Colors.primary} />,
+  },
+  {
+    id: 2,
     name: "My avarta",
     icon: <ImagePlusIcon size={24} color={Colors.primary} />,
   },
   {
-    id: 2,
+    id: 3,
     name: "Stories archive",
     icon: <Archive size={24} color={Colors.primary} />,
   },
   {
-    id: 3,
+    id: 4,
     name: "Memories",
     icon: <History size={24} color={Colors.primary} />,
   },
   {
-    id: 4,
+    id: 5,
     name: "My videos",
     icon: <Video size={24} color={Colors.primary} />,
   },
 ];
 
-export default function User() {
+export default function User({ navigation }) {
   const scrollY = useRef(new Animated.Value(0)).current;
+
+  const handleNavigation = (item) => {
+    if (item.name == "Settings") {
+      navigation.navigate("Settings");
+    }
+  };
 
   return (
     <View style={{ flex: 1 }}>
@@ -59,7 +70,7 @@ export default function User() {
         <View style={styles.bannerContainer}>
           <Animated.Image
             style={styles.banner(scrollY)}
-            source={require("../../assets/milad-fakurian-nY14Fs8pxT8-unsplash.jpg")}
+            source={require("../../assets/gradient.png")}
           />
         </View>
 
@@ -69,9 +80,6 @@ export default function User() {
             style={styles.avarta}
             source={require("../../assets/96YOG1ej_200x200.jpg")}
           />
-          <Pressable style={styles.changeAvartaIcon}>
-            <Camera size={24} color={"white"} />
-          </Pressable>
         </View>
 
         {/* ---------- USERNAME AND BIO ---------- */}
@@ -98,7 +106,10 @@ export default function User() {
               renderItem={({ item }) => {
                 return (
                   <View>
-                    <Pressable style={styles.settingOptionButton}>
+                    <Pressable
+                      style={styles.settingOptionButton}
+                      onPress={() => handleNavigation(item)}
+                    >
                       {item.icon}
                       <Text style={styles.settingOptionText}>{item.name}</Text>
                     </Pressable>
