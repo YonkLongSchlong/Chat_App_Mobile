@@ -1,9 +1,15 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { StatusBar } from "expo-status-bar";
 import { GetStarted, Login, Otp, Register } from "./screens/index";
 import { useFonts } from "expo-font";
 import BottomTab from "./screens/Navigations/BottomTab";
+import Settings from "./screens/Settings/Settings";
+import FontSize from "./constants/FontSize";
+import ProfileSettings from "./screens/Settings/Profile/ProfileSettings";
+import UsernameSetting from "./screens/Settings/Profile/UsernameSetting";
+import PasswordSettings from "./screens/Settings/Profile/PasswordSettings";
+import BioSetting from "./screens/Settings/Profile/BioSetting";
+import PhoneSetting from "./screens/Settings/Profile/PhoneSetting";
 
 export default function App() {
   const Stack = createNativeStackNavigator();
@@ -47,6 +53,68 @@ export default function App() {
           name="BottomTab"
           component={BottomTab}
           options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Settings"
+          component={Settings}
+          options={{
+            headerShown: true,
+            headerTitle: "Settings and privacy",
+            headerShadowVisible: false,
+            headerTitleStyle: {
+              fontFamily: "semiBold",
+              fontSize: FontSize.medium,
+            },
+          }}
+        />
+        <Stack.Screen
+          name="ProfileSettings"
+          component={ProfileSettings}
+          options={{
+            headerShown: true,
+            headerTitle: "Profile",
+            headerTitleStyle: {
+              fontFamily: "semiBold",
+              fontSize: FontSize.medium,
+            },
+            headerTransparent: true,
+          }}
+        />
+        <Stack.Screen
+          name="UsernameSetting"
+          component={UsernameSetting}
+          options={{
+            headerShown: true,
+            headerTitle: "",
+            headerTransparent: true,
+          }}
+        />
+        <Stack.Screen
+          name="PasswordSetting"
+          component={PasswordSettings}
+          options={{
+            headerShown: true,
+            headerTitle: "",
+            headerTransparent: true,
+          }}
+        />
+        <Stack.Screen
+          name="BioSetting"
+          component={BioSetting}
+          options={{
+            headerShown: true,
+            headerTitle: "",
+            headerTransparent: true,
+          }}
+        />
+        <Stack.Screen
+          name="PhoneSetting"
+          component={PhoneSetting}
+          options={{
+            headerShown: true,
+            headerTitle: "",
+            headerTransparent: true,
+          }}
         />
       </Stack.Navigator>
     </NavigationContainer>
