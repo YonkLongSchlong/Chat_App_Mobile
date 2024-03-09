@@ -15,12 +15,14 @@ import { Gift, UserPlus, Users } from "lucide-react-native";
 import Friend from "../../components/People/Friend";
 import { FlashList } from "@shopify/flash-list";
 import { LinearGradient } from "expo-linear-gradient";
+import { useNavigation } from "@react-navigation/native";
 
 const data = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
 
 export default function Peoples() {
   const [selected, setSelected] = useState("Friends");
   const [friendsSelected, setFriendsSelected] = useState("All");
+  
   return (
     <>
       <LinearGradient colors={Colors.gradient}>
@@ -57,9 +59,11 @@ export default function Peoples() {
 
         {/* ---------- FRIENDS REQUEST, BIRTHDAY, CONTACTS ---------- */}
         <View style={styles.optionContainer}>
-          <OptionsCard text={"Friend requests"} component={UserPlus} />
-          <OptionsCard text={"Contacts"} component={Users} />
-          <OptionsCard text={"Birthday"} component={Gift} />
+          <OptionsCard label="FriendRequest" text={"Friend requests"} component={UserPlus} />
+          <OptionsCard label="Contact" text={"Contact"} component={Users} />
+          <OptionsCard label="Birthday" text={"Birthday"} component={Gift} />
+          
+          
         </View>
 
         {/* ---------- SEPARATOR ---------- */}
@@ -169,6 +173,10 @@ const FriendsOptionButton = (props) => {
 };
 
 const OptionsCard = (props) => {
+  const navigation = useNavigation();
+  const handleNavigation = (props) => {
+    navigation.navigate(props.label );
+  };
   return (
     <Pressable
       style={{
@@ -177,6 +185,9 @@ const OptionsCard = (props) => {
         alignItems: "center",
         padding: 15,
         paddingHorizontal: 25,
+      }}
+      onPress={() => {
+        handleNavigation(props);
       }}
     >
       <props.component size={24} color={"black"} />

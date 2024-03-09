@@ -10,6 +10,9 @@ import UsernameSetting from "./screens/Settings/Profile/UsernameSetting";
 import PasswordSettings from "./screens/Settings/Profile/PasswordSettings";
 import BioSetting from "./screens/Settings/Profile/BioSetting";
 import PhoneSetting from "./screens/Settings/Profile/PhoneSetting";
+import FriendRequest from "./screens/Peoples/FriendRequest";
+import Contact from "./screens/Peoples/Contact";
+import Birthday from "./screens/Peoples/Birthday";
 
 export default function App() {
   const Stack = createNativeStackNavigator();
@@ -114,6 +117,45 @@ export default function App() {
             headerShown: true,
             headerTitle: "",
             headerTransparent: true,
+          }}
+        />
+        <Stack.Screen
+          name="FriendRequest"
+          component={FriendRequest}
+          options={{
+            headerShown: true,
+            headerTitle: "Friend Request",
+            headerTransparent: true,
+            headerTitleStyle: {
+              fontFamily: "semiBold",
+              fontSize: FontSize.medium,
+            },
+          }}
+        />
+        <Stack.Screen
+          name="Contact"
+          component={Contact}
+          options={{
+            headerShown: true,
+            headerTitle: "Contact",
+            headerTransparent: true,
+            headerTitleStyle: {
+              fontFamily: "semiBold",
+              fontSize: FontSize.medium,
+            },
+          }}
+        />
+        <Stack.Screen
+          name="Birthday"
+          component={Birthday}
+          options={{
+            headerShown: true,
+            headerTitle: "Birthday",
+            headerTransparent: true,
+            headerTitleStyle: {
+              fontFamily: "semiBold",
+              fontSize: FontSize.medium,
+            },
           }}
         />
       </Stack.Navigator>
