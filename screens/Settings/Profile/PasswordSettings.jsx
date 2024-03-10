@@ -1,10 +1,49 @@
-import { View, Text, StyleSheet, TextInput, Pressable } from "react-native";
-import React from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  Pressable,
+  Alert,
+} from "react-native";
+import React, { useContext, useState } from "react";
 import { LinearGradient } from "expo-linear-gradient";
 import { SafeAreaView } from "react-native-safe-area-context";
 import FontSize from "../../../constants/FontSize";
+import { AuthContext } from "../../../context/AuthContext";
+import UserFetchUpdate from "../../../hooks/UpdateUser/UserFetchUpdate";
 
-export default function PasswordSettings() {
+export default function PasswordSettings({ navigation }) {
+  const { user, token } = useContext(AuthContext);
+  const [oldPassword, setOldPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  const handleUpdatePassword = async () => {
+    if (confirmPassword !== newPassword) {
+      Alert.alert(
+        "Notices update",
+        "Your confirmation password is not the same as your new password"
+      );
+      return;
+    }
+
+    const data = { newPassword: newPassword, oldPassword: oldPassword };
+    const response = await UserFetchUpdate("password", user, token, data);
+
+    if (response.status == 200) {
+      Alert.alert("Notices update", "Update password successfully");
+      navigation.navigate("ProfileSettings");
+    } else if (response.status == 403) {
+      Alert.alert(
+        "Notices update",
+        "Your old password is wrong, please try again"
+      );
+    } else {
+      Alert.alert("Notices update", "Something went wrong, please try again");
+    }
+  };
+
   return (
     <LinearGradient colors={Colors.gradient} style={styles.container}>
       <SafeAreaView>
@@ -14,17 +53,34 @@ export default function PasswordSettings() {
         <View style={styles.textInputContainer}>
           <TextInput
             style={styles.textInput}
+            placeholder="Enter your old password"
+            onChangeText={(text) => setOldPassword(text)}
+            secureTextEntry={true}
+          />
+        </View>
+        <View style={styles.textInputContainer}>
+          <TextInput
+            style={styles.textInput}
             placeholder="Enter your new password"
+            onChangeText={(text) => setNewPassword(text)}
+            secureTextEntry={true}
           />
         </View>
         <View style={styles.textInputContainer}>
           <TextInput
             style={styles.textInput}
             placeholder="Confirm your new password"
+            onChangeText={(text) => {
+              setConfirmPassword(text);
+            }}
+            secureTextEntry={true}
           />
         </View>
         <View style={styles.buttonContainer}>
-          <Pressable style={styles.button}>
+          <Pressable
+            style={styles.button}
+            onPress={() => handleUpdatePassword()}
+          >
             <Text style={styles.buttonText}>Save</Text>
           </Pressable>
         </View>

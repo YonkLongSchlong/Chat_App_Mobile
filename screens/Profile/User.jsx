@@ -48,7 +48,7 @@ const settingOptions = [
   },
 ];
 
-export default function User({ navigation }) {
+export default function User({ navigation, user }) {
   const scrollY = useRef(new Animated.Value(0)).current;
 
   const handleNavigation = (item) => {
