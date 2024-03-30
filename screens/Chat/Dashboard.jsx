@@ -7,6 +7,7 @@ import { FlashList } from "@shopify/flash-list";
 import ConversationCard from "../../components/Chat/ConversationCard";
 import FontSize from "../../constants/FontSize";
 import { ListFilter } from "lucide-react-native";
+import { LinearGradient } from "expo-linear-gradient";
 
 const data = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
 
@@ -14,9 +15,11 @@ export default function Dashboard() {
   return (
     <View style={styles.container}>
       {/* ---------- SEARCH BAR ---------- */}
-      <SafeAreaView style={{ backgroundColor: Colors.primary }}>
-        <UserHeaderBar />
-      </SafeAreaView>
+      <LinearGradient colors={Colors.gradient}>
+        <SafeAreaView>
+          <UserHeaderBar />
+        </SafeAreaView>
+      </LinearGradient>
 
       {/* ---------- HEADER ---------- */}
       <View style={styles.headerContainer}>

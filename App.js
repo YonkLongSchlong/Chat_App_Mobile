@@ -1,12 +1,10 @@
-import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { StatusBar } from "expo-status-bar";
-import { GetStarted, Login, Otp, Register } from "./screens/index";
 import { useFonts } from "expo-font";
-import BottomTab from "./screens/Navigations/BottomTab";
+import { AuthProvider } from "./context/AuthContext";
+import NavigationWrapper from "./screens/Navigations/NavigationWrapper";
+import { View } from "lucide-react-native";
+import { ActivityIndicator } from "react-native";
 
 export default function App() {
-  const Stack = createNativeStackNavigator();
   const [fontLoaded] = useFonts({
     fontTitle: require("./assets/fonts/Pacifico-Regular.ttf"),
     regular: require("./assets/fonts/Lexend-Regular.ttf"),
@@ -17,38 +15,16 @@ export default function App() {
   });
 
   if (!fontLoaded) {
-    return null;
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <ActivityIndicator size={"large"} />
+      </View>
+    );
   }
 
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="BottomTab">
-        <Stack.Screen
-          name="GetStarted"
-          component={GetStarted}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="Login"
-          component={Login}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="Register"
-          component={Register}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="Otp"
-          component={Otp}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="BottomTab"
-          component={BottomTab}
-          options={{ headerShown: false }}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <AuthProvider>
+      <NavigationWrapper />
+    </AuthProvider>
   );
 }

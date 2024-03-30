@@ -1,13 +1,11 @@
 import { View, Text, Pressable, StyleSheet } from "react-native";
 import React from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
 import Colors from "../../constants/Colors";
+import { LinearGradient } from "expo-linear-gradient";
 
 export default function GetStarted({ navigation }) {
   return (
-    <SafeAreaView
-      style={{ backgroundColor: Colors.primary, flex: 1, paddingBottom: 50 }}
-    >
+    <LinearGradient colors={Colors.gradient} style={{ flex: 1 }}>
       <View style={styles.container}>
         <Text style={styles.appText}>Pandalo</Text>
         <Pressable
@@ -17,7 +15,7 @@ export default function GetStarted({ navigation }) {
           <Text style={styles.buttonText}>Start Connecting 💘</Text>
         </Pressable>
       </View>
-    </SafeAreaView>
+    </LinearGradient>
   );
 }
 

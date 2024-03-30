@@ -1,11 +1,15 @@
 import { View, Text, Pressable, StyleSheet } from "react-native";
-import React from "react";
+import React, { useContext, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Colors from "../../constants/Colors";
 import FontSize from "../../constants/FontSize";
 import LoginTextInput from "../../components/Inputs/LoginTextInput";
+import { AuthContext } from "../../context/AuthContext";
 
 export default function Login({ navigation }) {
+  const [phone, setPhone] = useState("");
+  const [password, setPassword] = useState("");
+  const { login } = useContext(AuthContext);
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.container}>
@@ -15,15 +19,26 @@ export default function Login({ navigation }) {
         {/* ---------- INPUT USER'S PHONE AND PASSWORD ---------- */}
         <View style={{ width: "70%" }}>
           <Text style={styles.headerText}>Login to your account:</Text>
-
-          <LoginTextInput placeholder="Enter your phone number" />
-          <LoginTextInput placeholder="Enter your password" secure={true} />
+          <LoginTextInput
+            placeholder="Enter your phone number"
+            setProps={setPhone}
+          />
+          <LoginTextInput
+            placeholder="Enter your password"
+            setProps={setPassword}
+            secure={true}
+          />
 
           <Pressable style={{ marginTop: -10 }}>
             <Text style={styles.forgetPasswordText}>Forgot password</Text>
           </Pressable>
 
-          <Pressable style={styles.signinButton}>
+          <Pressable
+            style={styles.signinButton}
+            onPress={() => {
+              login(phone, password);
+            }}
+          >
             <Text style={styles.signinButtonText}>Sign in</Text>
           </Pressable>
         </View>
