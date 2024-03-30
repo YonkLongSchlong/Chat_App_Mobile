@@ -1,9 +1,34 @@
-import { View, Text, TextInput, Pressable, StyleSheet } from "react-native";
-import React from "react";
+import {
+  View,
+  Text,
+  TextInput,
+  Pressable,
+  StyleSheet,
+  Alert,
+} from "react-native";
+import React, { useContext, useState } from "react";
 import { LinearGradient } from "expo-linear-gradient";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { AuthContext } from "../../../context/AuthContext";
+import UserFetchUpdate from "../../../hooks/UpdateUser/UserFetchUpdate";
 
-export default function BioSetting() {
+export default function BioSetting({ navigation }) {
+  const { user, token, setUser } = useContext(AuthContext);
+  const [bio, setBio] = useState("");
+
+  const handleUpdateBio = async () => {
+    const data = { bio: bio };
+    const response = await UserFetchUpdate("bio", user, token, data);
+
+    if (response.status === 200) {
+      user.bio = bio;
+      setUser(user);
+      Alert.alert("Notices update", "Update Bio successfully");
+      navigation.navigate("ProfileSettings");
+    } else {
+      Alert.alert("Notices update", "Something went wrong, please try again");
+    }
+  };
   return (
     <LinearGradient colors={Colors.gradient} style={styles.container}>
       <SafeAreaView>
@@ -11,10 +36,16 @@ export default function BioSetting() {
           <Text style={styles.headerText}>Edit Bio</Text>
         </View>
         <View style={styles.textInputContainer}>
-          <TextInput style={styles.textInput} placeholder="Enter your bio" />
+          <TextInput
+            style={styles.textInput}
+            onChangeText={(text) => {
+              setBio(text);
+            }}
+            placeholder="Enter your bio"
+          />
         </View>
         <View style={styles.buttonContainer}>
-          <Pressable style={styles.button}>
+          <Pressable style={styles.button} onPress={() => handleUpdateBio()}>
             <Text style={styles.buttonText}>Save</Text>
           </Pressable>
         </View>

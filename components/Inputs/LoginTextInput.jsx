@@ -8,6 +8,9 @@ export default function LoginTextInput(props) {
         placeholder={props.placeholder}
         style={styles.textInput}
         secureTextEntry={props.secure}
+        onChangeText={(text) => {
+          props.setProps(text);
+        }}
       ></TextInput>
     </View>
   );
@@ -15,7 +18,7 @@ export default function LoginTextInput(props) {
 
 const styles = StyleSheet.create({
   container: {
-    marginBottom: 20,
+    marginBottom: 15,
     alignItems: "center",
   },
   textInput: {

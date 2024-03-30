@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, Pressable, ScrollView } from "react-native";
-import React from "react";
+import React, { useContext } from "react";
 import {
   BellRing,
   ChevronRight,
@@ -12,8 +12,10 @@ import Colors from "../../constants/Colors";
 import FontSize from "../../constants/FontSize";
 import SettingsHeaderBar from "../../components/HeaderBar/SettingsHeaderBar";
 import { useNavigation } from "@react-navigation/native";
+import { AuthContext } from "../../context/AuthContext";
 
 export default function Settings() {
+  const { logout } = useContext(AuthContext);
   return (
     <View style={styles.container}>
       <SettingsHeaderBar />
@@ -22,7 +24,7 @@ export default function Settings() {
         <SettingCard label="General" icon={Sliders} />
         <SettingCard label="Notification" icon={BellRing} />
         <SettingCard label="Privacy" icon={ShieldCheck} />
-        <SettingCard label="Log out" icon={LogOut} />
+        <LogoutCard label="Log out" icon={LogOut} logout={logout} />
       </ScrollView>
     </View>
   );
@@ -39,6 +41,27 @@ const SettingCard = (props) => {
       style={styles.cardContainer}
       onPress={() => {
         handleNavigation(props);
+      }}
+    >
+      <View style={styles.iconLabelContainer}>
+        <View style={styles.iconContainer}>
+          <props.icon size={24} color={Colors.white} />
+        </View>
+        <Text style={styles.labelText}>{props.label}</Text>
+      </View>
+      <View>
+        <ChevronRight size={24} color={Colors.black} />
+      </View>
+    </Pressable>
+  );
+};
+
+const LogoutCard = (props) => {
+  return (
+    <Pressable
+      style={styles.cardContainer}
+      onPress={() => {
+        props.logout();
       }}
     >
       <View style={styles.iconLabelContainer}>

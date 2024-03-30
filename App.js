@@ -1,6 +1,3 @@
-import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { GetStarted, Login, Otp, Register } from "./screens/index";
 import { useFonts } from "expo-font";
 import BottomTab from "./screens/Navigations/BottomTab";
 import Settings from "./screens/Settings/Settings";
@@ -13,9 +10,12 @@ import PhoneSetting from "./screens/Settings/Profile/PhoneSetting";
 import FriendRequest from "./screens/Peoples/FriendRequest";
 import Contact from "./screens/Peoples/Contact";
 import Birthday from "./screens/Peoples/Birthday";
+import { AuthProvider } from "./context/AuthContext";
+import NavigationWrapper from "./screens/Navigations/NavigationWrapper";
+import { View } from "lucide-react-native";
+import { ActivityIndicator } from "react-native";
 
 export default function App() {
-  const Stack = createNativeStackNavigator();
   const [fontLoaded] = useFonts({
     fontTitle: require("./assets/fonts/Pacifico-Regular.ttf"),
     regular: require("./assets/fonts/Lexend-Regular.ttf"),
@@ -26,7 +26,11 @@ export default function App() {
   });
 
   if (!fontLoaded) {
-    return null;
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <ActivityIndicator size={"large"} />
+      </View>
+    );
   }
 
   return (
@@ -160,5 +164,8 @@ export default function App() {
         />
       </Stack.Navigator>
     </NavigationContainer>
+    <AuthProvider>
+      <NavigationWrapper />
+    </AuthProvider>
   );
 }

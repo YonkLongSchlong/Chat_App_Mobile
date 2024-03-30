@@ -14,11 +14,12 @@ export default function ProfileSettings({ navigation }) {
       navigation.navigate("PasswordSetting");
     } else if (props.label == "Bio") {
       navigation.navigate("BioSetting");
-    } else if (props.label == "Avatar") {
-      navigation.navigate("AvatarSetting");
     } else if (props.label == "Phone") {
       navigation.navigate("PhoneSetting");
     }
+    // } else if (props.label == "Avatar") {
+    //   navigation.navigate("AvatarSetting");
+    // }
   };
 
   return (

@@ -1,9 +1,37 @@
-import { View, Text, TextInput, Pressable, StyleSheet } from "react-native";
-import React from "react";
+import {
+  View,
+  Text,
+  TextInput,
+  Pressable,
+  StyleSheet,
+  Alert,
+} from "react-native";
+import React, { useContext, useState } from "react";
 import { LinearGradient } from "expo-linear-gradient";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { AuthContext } from "../../../context/AuthContext";
+import UserFetchUpdate from "../../../hooks/UpdateUser/UserFetchUpdate";
+import * as SecureStore from "expo-secure-store";
 
-export default function PhoneSetting() {
+export default function PhoneSetting({ navigation }) {
+  const { user, token, setUser } = useContext(AuthContext);
+  const [phone, setPhone] = useState("");
+  console.log(user);
+
+  const handleUpdatePhone = async () => {
+    const data = { phone: phone };
+    const response = await UserFetchUpdate("phone", user, token, data);
+
+    if (response.status === 200) {
+      user.phone = phone;
+      setUser(user);
+      Alert.alert("Notices update", "Phone updated successfully");
+      navigation.navigate("ProfileSettings");
+    } else {
+      Alert.alert("Notices update", "Something went wrong. Please try again");
+    }
+  };
+
   return (
     <LinearGradient colors={Colors.gradient} style={styles.container}>
       <SafeAreaView>
@@ -14,10 +42,11 @@ export default function PhoneSetting() {
           <TextInput
             style={styles.textInput}
             placeholder="Enter your phone number"
+            onChangeText={(text) => setPhone(text)}
           />
         </View>
         <View style={styles.buttonContainer}>
-          <Pressable style={styles.button}>
+          <Pressable style={styles.button} onPress={() => {}}>
             <Text style={styles.buttonText}>Save</Text>
           </Pressable>
         </View>

@@ -1,11 +1,37 @@
-import { View, Text, StyleSheet, TextInput, Pressable } from "react-native";
-import React from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  Pressable,
+  Alert,
+} from "react-native";
+import React, { useContext, useState } from "react";
 import { LinearGradient } from "expo-linear-gradient";
 import { SafeAreaView } from "react-native-safe-area-context";
 import FontSize from "../../../constants/FontSize";
 import Colors from "../../../constants/Colors";
+import { AuthContext } from "../../../context/AuthContext";
+import UserFetchUpdate from "../../../hooks/UpdateUser/UserFetchUpdate";
 
-export default function UsernameSetting() {
+export default function UsernameSetting({ navigation }) {
+  const { user, token, setUser } = useContext(AuthContext);
+  const [username, setUsername] = useState("");
+
+  const handleUpdateUsername = async () => {
+    const data = { username: username };
+    const response = await UserFetchUpdate("username", user, token, data);
+
+    if (response.status === 200) {
+      user.username = username;
+      setUser(user);
+      Alert.alert("Notices update", "Update username successfully");
+      navigation.navigate("ProfileSettings");
+    } else {
+      Alert.alert("Notices update", "Something went wrong, please try again");
+    }
+  };
+
   return (
     <LinearGradient colors={Colors.gradient} style={styles.container}>
       <SafeAreaView>
@@ -16,10 +42,16 @@ export default function UsernameSetting() {
           <TextInput
             style={styles.textInput}
             placeholder="Enter your new username"
+            onChangeText={(text) => setUsername(text)}
           />
         </View>
         <View style={styles.buttonContainer}>
-          <Pressable style={styles.button}>
+          <Pressable
+            style={styles.button}
+            onPress={() => {
+              handleUpdateUsername();
+            }}
+          >
             <Text style={styles.buttonText}>Save</Text>
           </Pressable>
         </View>
