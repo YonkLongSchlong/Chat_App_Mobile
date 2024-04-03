@@ -7,6 +7,7 @@ import {
   Image,
   Pressable,
   StyleSheet,
+  Alert,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Colors from "../../constants/Colors";
@@ -29,7 +30,12 @@ export default function FriendRequest() {
         }
       );
       const data = await response.json();
-      setFriendRequests(data);
+      if (response.status === 403) {
+        setFriendRequests(null);
+        Alert.alert("Notice informed", data);
+      } else {
+        setFriendRequests(data);
+      }
     } catch (error) {
       console.log({
         Error: "Fail fetching friend requests",

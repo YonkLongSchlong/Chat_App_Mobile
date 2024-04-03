@@ -7,7 +7,6 @@ export default function Otp({ route, navigation }) {
   const { username, phone, password, gender, dob } = route.params;
   const [otp, setOtp] = useState("");
 
-  console.log(dob);
   const handleConfirmOtp = async () => {
     try {
       const response = await fetch(
