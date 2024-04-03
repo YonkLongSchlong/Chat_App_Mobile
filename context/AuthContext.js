@@ -9,10 +9,11 @@ export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(null);
   const [user, setUser] = useState(null);
 
-  const login = async (phone, password) => {
+  const login = async ({ phone, password }) => {
     try {
       setIsLoading(true);
-      // Fetch user
+
+      /* Fetch user bằng phone, pwd */
       const response = await fetch(
         process.env.EXPO_PUBLIC_BASE_URL + "/auth/login",
         {
@@ -26,6 +27,8 @@ export const AuthProvider = ({ children }) => {
       );
       const data = await response.json();
 
+      /* Nếu response trả về 200 (thành công) 
+         Lưu user, token lại trong localstore đt và trong state */
       if (response.status === 200) {
         setToken(data.token);
         setUser(data.user);
@@ -42,8 +45,8 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  /*Xóa access token và thông tin user trong local storage của điện thoại */
   const logout = async () => {
-    // Xóa access token và thông tin user trong local storage của điện thoại nếu người dùng logout
     setIsLoading(true);
     await SecureStore.deleteItemAsync("Token");
     await SecureStore.deleteItemAsync("User");
@@ -52,7 +55,7 @@ export const AuthProvider = ({ children }) => {
     setIsLoading(false);
   };
 
-  // Lấy access token và thông tin user mỗi lần user mở lại app
+  /* Lấy access token và thông tin user mỗi lần user mở lại app */
   const isLoggedin = async () => {
     try {
       setIsLoading(true);

@@ -2,12 +2,14 @@ import { View, Text, Pressable, StyleSheet, Alert } from "react-native";
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import LoginTextInput from "../../components/Inputs/LoginTextInput";
+import { useForm } from "react-hook-form";
+import { otpRegex } from "../../constants/Regex";
 
 export default function Otp({ route, navigation }) {
+  const { control, handleSubmit } = useForm();
   const { username, phone, password, gender, dob } = route.params;
-  const [otp, setOtp] = useState("");
 
-  const handleConfirmOtp = async () => {
+  const handleConfirmOtp = async ({ otp }) => {
     try {
       const response = await fetch(
         process.env.EXPO_PUBLIC_BASE_URL + "/auth/verifyRegister",
@@ -46,14 +48,16 @@ export default function Otp({ route, navigation }) {
           </Text>
 
           <LoginTextInput
+            name="otp"
+            control={control}
             placeholder="Enter the otp number"
-            setProps={setOtp}
+            rules={{
+              required: "OTP is required",
+            }}
           />
 
           <Pressable
-            onPress={() => {
-              handleConfirmOtp();
-            }}
+            onPress={handleSubmit(handleConfirmOtp)}
             style={styles.button}
           >
             <Text style={styles.buttonText}>Confirm</Text>

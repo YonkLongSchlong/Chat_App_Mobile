@@ -13,47 +13,45 @@ import Checkbox from "expo-checkbox";
 import Colors from "../../constants/Colors";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { LogBox } from "react-native";
+import { useForm } from "react-hook-form";
+import {
+  passwordRegex,
+  phoneRegex,
+  usernameRegex,
+} from "../../constants/Regex";
 LogBox.ignoreLogs([
   "Non-serializable values were found in the navigation state",
 ]);
 
 export default function Register({ navigation }) {
-  const [username, setUsername] = useState("");
-  const [phone, setPhone] = useState("");
-  const [password, setPasswrod] = useState("");
-  const [confirmPassword, setConfirmPasswrod] = useState("");
+  const { control, handleSubmit, watch } = useForm();
+  const pwd = watch("password");
   const [isMale, setIsMale] = useState(true);
   const [isFemale, setIsFemale] = useState(false);
   const [gender, setGender] = useState("Male");
   const [date, setDate] = useState(new Date());
   const [show, setShow] = useState(false);
 
-  const handleRegister = async () => {
-    if (confirmPassword !== password) {
-      Alert.alert(
-        "Credentials error",
-        "Confirm password does not match your password"
-      );
-    } else {
-      try {
-        isFemale ? setGender("Female") : setGender("Male");
-        await fetch(process.env.EXPO_PUBLIC_BASE_URL + "/auth/register", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            phone: phone,
-          }),
-        });
-        navigation.navigate("Otp", {
+  const handleRegister = async ({ phone, username, password }) => {
+    console.log(phone, username, password);
+    try {
+      isFemale ? setGender("Female") : setGender("Male");
+      await fetch(process.env.EXPO_PUBLIC_BASE_URL + "/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
           phone: phone,
-          username: username,
-          password: password,
-          gender: gender,
-          dob: date,
-        });
-      } catch (error) {
-        console.log({ Error: error.message });
-      }
+        }),
+      });
+      navigation.navigate("Otp", {
+        phone: phone,
+        username: username,
+        password: password,
+        gender: gender,
+        dob: date,
+      });
+    } catch (error) {
+      console.log({ Error: error.message });
     }
   };
 
@@ -63,29 +61,78 @@ export default function Register({ navigation }) {
         {/* ---------- HEADER ---------- */}
         <Text style={styles.appText}>Pandalo</Text>
 
+        {/* ---------- INPUT FIELDS ---------- */}
         <View style={{ width: "70%" }}>
-          {/* ---------- USERNAME, PHONE NUMBER AND PASSWORD INPUTS ---------- */}
           <Text style={styles.headerText}>
             Please fill out the information:
           </Text>
 
+          {/* ---------- USERNAME, PHONE NUMBER AND PASSWORD INPUTS ---------- */}
           <LoginTextInput
+            name="username"
+            control={control}
             placeholder="Enter your username"
-            setProps={setUsername}
+            rules={{
+              required: "Username is required",
+              maxLength: {
+                value: 24,
+                message: "Username can't be longer than 24 characters",
+              },
+              pattern: {
+                value: usernameRegex,
+                message: "Username can't not contain special characters",
+              },
+            }}
           />
           <LoginTextInput
+            name="phone"
+            control={control}
             placeholder="Enter your phone number"
-            setProps={setPhone}
+            rules={{
+              required: "Phone is required",
+              minLength: {
+                value: 10,
+                message: "Phone must be at least 10 numbers",
+              },
+              maxLength: {
+                value: 10,
+                message: "Phone can't be longer than 10 numbers",
+              },
+              pattern: { value: phoneRegex, message: "Invalid phone number" },
+            }}
           />
           <LoginTextInput
+            name="password"
+            control={control}
             placeholder="Enter your password"
+            rules={{
+              required: "Password is required",
+              // minLength: {
+              //   value: 3,
+              //   message: "Password must be at least 6 characters",
+              // },
+              maxLength: {
+                value: 24,
+                message: "Password can't be longer than 24 characters",
+              },
+              pattern: {
+                value: passwordRegex,
+                message:
+                  "Password must contain at least 8 characters, an uppercase, a number and no special characters",
+              },
+            }}
             secure={true}
-            setProps={setPasswrod}
           />
           <LoginTextInput
+            name="confirmPassword"
+            control={control}
             placeholder="Enter confirm password"
+            rules={{
+              required: "Confirm password is required",
+              validate: (value) =>
+                value === pwd || "Confirm password does not match",
+            }}
             secure={true}
-            setProps={setConfirmPasswrod}
           />
 
           {/* ---------- DOB PICKER ---------- */}
@@ -142,10 +189,9 @@ export default function Register({ navigation }) {
             </View>
           </View>
 
+          {/* ---------- REGISTER BUTTON ---------- */}
           <Pressable
-            onPress={() => {
-              handleRegister();
-            }}
+            onPress={handleSubmit(handleRegister)}
             style={styles.button}
           >
             <Text style={styles.buttonText}>Confirm</Text>
@@ -175,7 +221,9 @@ const styles = StyleSheet.create({
     fontFamily: "regular",
   },
   checkboxContainer: {
-    marginVertical: 15,
+    marginTop: 17,
+    marginBottom: 15,
+    marginHorizontal: 2,
     flexDirection: "row",
     justifyContent: "flex-start",
     alignItems: "center",
@@ -198,7 +246,9 @@ const styles = StyleSheet.create({
     fontFamily: "regular",
     fontSize: FontSize.regular,
   },
-  dobContainer: {},
+  dobContainer: {
+    marginTop: 15,
+  },
   textInput: {
     paddingVertical: 10,
     paddingHorizontal: 20,
