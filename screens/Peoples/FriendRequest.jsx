@@ -30,7 +30,7 @@ export default function FriendRequest() {
         }
       );
       const data = await response.json();
-      if (response.status === 403) {
+      if (response.status === 401) {
         setFriendRequests(null);
         Alert.alert("Notice informed", data);
       } else {
