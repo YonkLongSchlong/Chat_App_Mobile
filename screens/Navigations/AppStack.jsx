@@ -8,6 +8,9 @@ import UsernameSetting from "../Settings/Profile/UsernameSetting";
 import PasswordSettings from "../Settings/Profile/PasswordSettings";
 import BioSetting from "../Settings/Profile/BioSetting";
 import PhoneSetting from "../Settings/Profile/PhoneSetting";
+import FriendRequest from "../Peoples/FriendRequest";
+import Contact from "../Peoples/Contact";
+import Birthday from "../Peoples/Birthday";
 
 export default function AppStack() {
   const Stack = createNativeStackNavigator();
@@ -81,6 +84,45 @@ export default function AppStack() {
           headerTransparent: true,
         }}
       />
+      <Stack.Screen
+          name="FriendRequest"
+          component={FriendRequest}
+          options={{
+            headerShown: true,
+            headerTitle: "Friend Request",
+            headerTransparent: true,
+            headerTitleStyle: {
+              fontFamily: "semiBold",
+              fontSize: FontSize.medium,
+            },
+          }}
+        />
+        <Stack.Screen
+          name="Contact"
+          component={Contact}
+          options={{
+            headerShown: true,
+            headerTitle: "Contact",
+            headerTransparent: true,
+            headerTitleStyle: {
+              fontFamily: "semiBold",
+              fontSize: FontSize.medium,
+            },
+          }}
+        />
+        <Stack.Screen
+          name="Birthday"
+          component={Birthday}
+          options={{
+            headerShown: true,
+            headerTitle: "Birthday",
+            headerTransparent: true,
+            headerTitleStyle: {
+              fontFamily: "semiBold",
+              fontSize: FontSize.medium,
+            },
+          }}
+        />
     </Stack.Navigator>
   );
 }
