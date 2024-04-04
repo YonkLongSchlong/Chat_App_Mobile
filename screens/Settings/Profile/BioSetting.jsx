@@ -10,7 +10,8 @@ import React, { useContext, useState } from "react";
 import { LinearGradient } from "expo-linear-gradient";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { AuthContext } from "../../../context/AuthContext";
-import UserFetchUpdate from "../../../hooks/UpdateUser/UserFetchUpdate";
+import UserFetchUpdate from "../../../hooks/User/UserFetchUpdate";
+import * as SecureStore from "expo-secure-store";
 
 export default function BioSetting({ navigation }) {
   const { user, token, setUser } = useContext(AuthContext);
@@ -19,12 +20,13 @@ export default function BioSetting({ navigation }) {
   const handleUpdateBio = async () => {
     const data = { bio: bio };
     const response = await UserFetchUpdate("bio", user, token, data);
+    const responseData = await response.json();
 
     if (response.status === 200) {
-      user.bio = bio;
-      setUser(user);
+      setUser(responseData);
+      await SecureStore.setItemAsync("User", JSON.stringify(responseData));
       Alert.alert("Notices update", "Update Bio successfully");
-      navigation.navigate("ProfileSettings");
+      navigation.navigate("UserSettings");
     } else {
       Alert.alert("Notices update", "Something went wrong, please try again");
     }
@@ -71,6 +73,7 @@ const styles = StyleSheet.create({
   headerText: {
     fontFamily: "semiBold",
     fontSize: FontSize.large,
+    color: Colors.white,
   },
   textInputContainer: {
     marginTop: 15,

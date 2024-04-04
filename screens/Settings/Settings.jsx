@@ -20,7 +20,7 @@ export default function Settings() {
     <View style={styles.container}>
       <SettingsHeaderBar />
       <ScrollView style={styles.settingsCardContainer}>
-        <SettingCard label="Profile" icon={UserRound} />
+        <SettingCard label="User" icon={UserRound} />
         <SettingCard label="General" icon={Sliders} />
         <SettingCard label="Notification" icon={BellRing} />
         <SettingCard label="Privacy" icon={ShieldCheck} />

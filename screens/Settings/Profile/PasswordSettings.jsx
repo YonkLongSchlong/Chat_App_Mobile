@@ -11,10 +11,11 @@ import { LinearGradient } from "expo-linear-gradient";
 import { SafeAreaView } from "react-native-safe-area-context";
 import FontSize from "../../../constants/FontSize";
 import { AuthContext } from "../../../context/AuthContext";
-import UserFetchUpdate from "../../../hooks/UpdateUser/UserFetchUpdate";
+import UserFetchUpdate from "../../../hooks/User/UserFetchUpdate";
+import * as SecureStore from "expo-secure-store";
 
 export default function PasswordSettings({ navigation }) {
-  const { user, token } = useContext(AuthContext);
+  const { user, setUser, token } = useContext(AuthContext);
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -30,10 +31,13 @@ export default function PasswordSettings({ navigation }) {
 
     const data = { newPassword: newPassword, oldPassword: oldPassword };
     const response = await UserFetchUpdate("password", user, token, data);
+    const responseData = await response.json();
 
     if (response.status == 200) {
+      setUser(responseData);
+      await SecureStore.setItemAsync("User", JSON.stringify(responseData));
       Alert.alert("Notices update", "Update password successfully");
-      navigation.navigate("ProfileSettings");
+      navigation.navigate("UserSettings");
     } else if (response.status == 403) {
       Alert.alert(
         "Notices update",
@@ -106,6 +110,7 @@ const styles = StyleSheet.create({
   headerText: {
     fontFamily: "semiBold",
     fontSize: FontSize.large,
+    color: Colors.white,
   },
   textInputContainer: {
     marginTop: 15,

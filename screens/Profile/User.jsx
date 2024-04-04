@@ -8,7 +8,7 @@ import {
   Pressable,
   FlatList,
 } from "react-native";
-import React, { useRef } from "react";
+import React, { useContext, useEffect, useRef } from "react";
 import {
   Archive,
   History,
@@ -18,6 +18,7 @@ import {
 } from "lucide-react-native";
 import FontSize from "../../constants/FontSize";
 import Colors from "../../constants/Colors";
+import { AuthContext } from "../../context/AuthContext";
 
 const BANNER_MAX_HEIGHT = Dimensions.get("window").height / 2.5;
 const settingOptions = [
@@ -48,7 +49,8 @@ const settingOptions = [
   },
 ];
 
-export default function User({ navigation, user }) {
+export default function User({ navigation }) {
+  const { user } = useContext(AuthContext);
   const scrollY = useRef(new Animated.Value(0)).current;
 
   const handleNavigation = (item) => {
@@ -70,24 +72,19 @@ export default function User({ navigation, user }) {
         <View style={styles.bannerContainer}>
           <Animated.Image
             style={styles.banner(scrollY)}
-            source={require("../../assets/gradient.png")}
+            source={require("../../assets/gradient-2.jpg")}
           />
         </View>
 
         {/* ---------- AVARTA BANNER ---------- */}
         <View style={styles.avartarContainer}>
-          <Image
-            style={styles.avarta}
-            source={require("../../assets/96YOG1ej_200x200.jpg")}
-          />
+          <Image style={styles.avarta} source={{ uri: user.avatar }} />
         </View>
 
         {/* ---------- USERNAME AND BIO ---------- */}
         <View style={{ marginTop: 80, alignItems: "center" }}>
-          <Text style={styles.userNameText}>The Wock</Text>
-          <Text style={styles.bioText}>
-            If ya smell, what the wock is cooking
-          </Text>
+          <Text style={styles.userNameText}>{user.username}</Text>
+          <Text style={styles.bioText}>{user.bio}</Text>
         </View>
 
         {/* ---------- SETTING OPTIONS ---------- */}

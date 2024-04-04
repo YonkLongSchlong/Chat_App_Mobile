@@ -6,10 +6,12 @@ import FontSize from "../../constants/FontSize";
 import LoginTextInput from "../../components/Inputs/LoginTextInput";
 import { AuthContext } from "../../context/AuthContext";
 
+import { useForm } from "react-hook-form";
+
 export default function Login({ navigation }) {
-  const [phone, setPhone] = useState("");
-  const [password, setPassword] = useState("");
+  const { control, handleSubmit } = useForm();
   const { login } = useContext(AuthContext);
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.container}>
@@ -19,26 +21,29 @@ export default function Login({ navigation }) {
         {/* ---------- INPUT USER'S PHONE AND PASSWORD ---------- */}
         <View style={{ width: "70%" }}>
           <Text style={styles.headerText}>Login to your account:</Text>
+
+          {/* ---------- INPUT FIELDS ---------- */}
           <LoginTextInput
+            name="phone"
+            control={control}
             placeholder="Enter your phone number"
-            setProps={setPhone}
+            rules={{ required: "Please enter your phone number" }}
           />
           <LoginTextInput
+            name="password"
+            control={control}
             placeholder="Enter your password"
-            setProps={setPassword}
+            rules={{ required: "Please enter your password" }}
             secure={true}
           />
 
-          <Pressable style={{ marginTop: -10 }}>
+          {/* ---------- FORGOT PWD BUTTON ---------- */}
+          <Pressable style={{ marginTop: 10 }}>
             <Text style={styles.forgetPasswordText}>Forgot password</Text>
           </Pressable>
 
-          <Pressable
-            style={styles.signinButton}
-            onPress={() => {
-              login(phone, password);
-            }}
-          >
+          {/* ---------- SIGNIN BUTTON ---------- */}
+          <Pressable style={styles.signinButton} onPress={handleSubmit(login)}>
             <Text style={styles.signinButtonText}>Sign in</Text>
           </Pressable>
         </View>
@@ -69,7 +74,7 @@ const styles = StyleSheet.create({
   },
   headerText: {
     fontSize: FontSize.medium,
-    marginBottom: 20,
+    marginBottom: 5,
     alignSelf: "flex-start",
     fontFamily: "regular",
   },

@@ -10,23 +10,23 @@ import React, { useContext, useState } from "react";
 import { LinearGradient } from "expo-linear-gradient";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { AuthContext } from "../../../context/AuthContext";
-import UserFetchUpdate from "../../../hooks/UpdateUser/UserFetchUpdate";
+import UserFetchUpdate from "../../../hooks/User/UserFetchUpdate";
 import * as SecureStore from "expo-secure-store";
 
 export default function PhoneSetting({ navigation }) {
   const { user, token, setUser } = useContext(AuthContext);
   const [phone, setPhone] = useState("");
-  console.log(user);
 
   const handleUpdatePhone = async () => {
     const data = { phone: phone };
     const response = await UserFetchUpdate("phone", user, token, data);
+    const responseData = await response.json();
 
     if (response.status === 200) {
-      user.phone = phone;
-      setUser(user);
+      setUser(responseData);
+      await SecureStore.setItemAsync("User", JSON.stringify(responseData));
       Alert.alert("Notices update", "Phone updated successfully");
-      navigation.navigate("ProfileSettings");
+      navigation.navigate("UserSettings");
     } else {
       Alert.alert("Notices update", "Something went wrong. Please try again");
     }
@@ -46,7 +46,7 @@ export default function PhoneSetting({ navigation }) {
           />
         </View>
         <View style={styles.buttonContainer}>
-          <Pressable style={styles.button} onPress={() => {}}>
+          <Pressable style={styles.button} onPress={() => handleUpdatePhone()}>
             <Text style={styles.buttonText}>Save</Text>
           </Pressable>
         </View>
@@ -72,6 +72,7 @@ const styles = StyleSheet.create({
   headerText: {
     fontFamily: "semiBold",
     fontSize: FontSize.large,
+    color: Colors.white,
   },
   textInputContainer: {
     marginTop: 15,

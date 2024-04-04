@@ -1,13 +1,17 @@
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import GetStarted from "../Auth/GetStarted";
 import BottomTab from "./BottomTab";
 import Settings from "../Settings/Settings";
-import ProfileSettings from "../Settings/Profile/ProfileSettings";
-import UsernameSetting from "../Settings/Profile/UsernameSetting";
+import UserSettings from "../Settings/Profile/UserSettings";
+import ProfileSetting from "../Settings/Profile/ProfileSetting";
 import PasswordSettings from "../Settings/Profile/PasswordSettings";
 import BioSetting from "../Settings/Profile/BioSetting";
 import PhoneSetting from "../Settings/Profile/PhoneSetting";
+import FriendRequest from "../Peoples/FriendRequest";
+import Contact from "../Peoples/Contact";
+import Birthday from "../Peoples/Birthday";
+import Colors from "../../constants/Colors";
+import AvatarSetting from "../Settings/Profile/AvatarSetting";
 
 export default function AppStack() {
   const Stack = createNativeStackNavigator();
@@ -33,24 +37,27 @@ export default function AppStack() {
         }}
       />
       <Stack.Screen
-        name="ProfileSettings"
-        component={ProfileSettings}
+        name="UserSettings"
+        component={UserSettings}
         options={{
           headerShown: true,
-          headerTitle: "Profile",
+          headerTitle: "User",
           headerTitleStyle: {
             fontFamily: "semiBold",
             fontSize: FontSize.medium,
+            color: Colors.white,
           },
+          headerTintColor: Colors.white,
           headerTransparent: true,
         }}
       />
       <Stack.Screen
-        name="UsernameSetting"
-        component={UsernameSetting}
+        name="ProfileSetting"
+        component={ProfileSetting}
         options={{
           headerShown: true,
           headerTitle: "",
+          headerTintColor: Colors.white,
           headerTransparent: true,
         }}
       />
@@ -60,6 +67,7 @@ export default function AppStack() {
         options={{
           headerShown: true,
           headerTitle: "",
+          headerTintColor: Colors.white,
           headerTransparent: true,
         }}
       />
@@ -69,6 +77,7 @@ export default function AppStack() {
         options={{
           headerShown: true,
           headerTitle: "",
+          headerTintColor: Colors.white,
           headerTransparent: true,
         }}
       />
@@ -78,7 +87,57 @@ export default function AppStack() {
         options={{
           headerShown: true,
           headerTitle: "",
+          headerTintColor: Colors.white,
           headerTransparent: true,
+        }}
+      />
+      <Stack.Screen
+        name="AvatarSetting"
+        component={AvatarSetting}
+        options={{
+          headerShown: true,
+          headerTitle: "",
+          headerTintColor: Colors.white,
+          headerTransparent: true,
+        }}
+      />
+      <Stack.Screen
+        name="FriendRequest"
+        component={FriendRequest}
+        options={{
+          headerShown: true,
+          headerTitle: "Friend Request",
+          headerTransparent: true,
+          headerTitleStyle: {
+            fontFamily: "semiBold",
+            fontSize: FontSize.medium,
+          },
+        }}
+      />
+      <Stack.Screen
+        name="Contact"
+        component={Contact}
+        options={{
+          headerShown: true,
+          headerTitle: "Contact",
+          headerTransparent: true,
+          headerTitleStyle: {
+            fontFamily: "semiBold",
+            fontSize: FontSize.medium,
+          },
+        }}
+      />
+      <Stack.Screen
+        name="Birthday"
+        component={Birthday}
+        options={{
+          headerShown: true,
+          headerTitle: "Birthday",
+          headerTransparent: true,
+          headerTitleStyle: {
+            fontFamily: "semiBold",
+            fontSize: FontSize.medium,
+          },
         }}
       />
     </Stack.Navigator>

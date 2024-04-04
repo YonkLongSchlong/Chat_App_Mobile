@@ -2,11 +2,14 @@ import { View, Text, Pressable, StyleSheet, Alert } from "react-native";
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import LoginTextInput from "../../components/Inputs/LoginTextInput";
+import { useForm } from "react-hook-form";
+import { otpRegex } from "../../constants/Regex";
 
 export default function Otp({ route, navigation }) {
-  const { username, phone, password } = route.params;
-  const [otp, setOtp] = useState("");
-  const handleConfirmOtp = async () => {
+  const { control, handleSubmit } = useForm();
+  const { username, phone, password, gender, dob } = route.params;
+
+  const handleConfirmOtp = async ({ otp }) => {
     try {
       const response = await fetch(
         process.env.EXPO_PUBLIC_BASE_URL + "/auth/verifyRegister",
@@ -18,10 +21,12 @@ export default function Otp({ route, navigation }) {
             otp: otp,
             username: username,
             password: password,
+            gender: gender,
+            dob: dob,
           }),
         }
       );
-
+      console.log(response.status);
       if (response.status === 201) {
         Alert.alert("Notices updated", "Create account successfully");
         navigation.navigate("Login");
@@ -39,18 +44,20 @@ export default function Otp({ route, navigation }) {
         {/* ---------- OTP INPUTS ---------- */}
         <View style={{ width: "70%" }}>
           <Text style={styles.headerText}>
-            Enter the otp that has been send to your phone number:
+            Enter the otp that has been sent to your phone number:
           </Text>
 
           <LoginTextInput
+            name="otp"
+            control={control}
             placeholder="Enter the otp number"
-            setProps={setOtp}
+            rules={{
+              required: "OTP is required",
+            }}
           />
 
           <Pressable
-            onPress={() => {
-              handleConfirmOtp();
-            }}
+            onPress={handleSubmit(handleConfirmOtp)}
             style={styles.button}
           >
             <Text style={styles.buttonText}>Confirm</Text>
