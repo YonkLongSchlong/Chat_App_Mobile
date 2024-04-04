@@ -42,6 +42,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+ 
   const logout = async () => {
     // Xóa access token và thông tin user trong local storage của điện thoại nếu người dùng logout
     setIsLoading(true);

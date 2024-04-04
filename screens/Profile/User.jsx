@@ -18,6 +18,8 @@ import {
 } from "lucide-react-native";
 import FontSize from "../../constants/FontSize";
 import Colors from "../../constants/Colors";
+import { AuthContext } from "../../context/AuthContext";
+import { useContext } from "react";
 
 const BANNER_MAX_HEIGHT = Dimensions.get("window").height / 2.5;
 const settingOptions = [
@@ -48,7 +50,12 @@ const settingOptions = [
   },
 ];
 
-export default function User({ navigation, user }) {
+
+
+export default function User({ navigation }) {
+  const {user} = useContext(AuthContext)
+  
+
   const scrollY = useRef(new Animated.Value(0)).current;
 
   const handleNavigation = (item) => {
@@ -56,6 +63,7 @@ export default function User({ navigation, user }) {
       navigation.navigate("Settings");
     }
   };
+
 
   return (
     <View style={{ flex: 1 }}>
@@ -84,7 +92,7 @@ export default function User({ navigation, user }) {
 
         {/* ---------- USERNAME AND BIO ---------- */}
         <View style={{ marginTop: 80, alignItems: "center" }}>
-          <Text style={styles.userNameText}>The Wock</Text>
+          <Text style={styles.userNameText}>{user.username}</Text>
           <Text style={styles.bioText}>
             If ya smell, what the wock is cooking
           </Text>
