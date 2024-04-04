@@ -11,6 +11,8 @@ import PhoneSetting from "../Settings/Profile/PhoneSetting";
 import FriendRequest from "../Peoples/FriendRequest";
 import Contact from "../Peoples/Contact";
 import Birthday from "../Peoples/Birthday";
+import Chat1to1 from "../../components/Chat/Chat1to1";
+import ChatHeader from "../../components/Chat/ChatHeader";
 
 export default function AppStack() {
   const Stack = createNativeStackNavigator();
@@ -122,6 +124,29 @@ export default function AppStack() {
               fontSize: FontSize.medium,
             },
           }}
+        />
+        <Stack.Screen
+          name="Chat1to1"
+          component={Chat1to1}
+          // options={{
+          //   headerShown: true,
+          //   headerTitle: "Tên đối phương",
+          //   headerTransparent: true,
+          //   headerTitleStyle: {
+          //     fontFamily: "semiBold",
+          //     fontSize: FontSize.medium,
+          //   },
+          // }}
+          options={({ navigation }) => ({
+            headerShown: true,
+            headerTransparent: true,
+            headerTitle: () => (
+              <ChatHeader 
+                onCall={() => console.log('Call pressed')} 
+                onVideoCall={() => console.log('Video call pressed')} 
+              />
+            ),
+          })}
         />
     </Stack.Navigator>
   );
